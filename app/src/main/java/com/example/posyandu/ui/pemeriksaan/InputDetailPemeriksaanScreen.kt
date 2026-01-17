@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.posyandu.data.local.entity.Pemeriksaan
@@ -61,7 +62,7 @@ fun InputDetailPemeriksaanScreen(
                 .background(Color(0xFFFFFAFA))
                 .verticalScroll(rememberScrollState())
         ) {
-            // HEADER INFO PASIEN (Gaya Modern)
+            // HEADER INFO PASIEN
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -131,7 +132,7 @@ fun InputDetailPemeriksaanScreen(
                     onValueChange = { tinggiBadan = it; hasilDihitung = false },
                     label = { Text("Tinggi Badan (cm)") },
                     modifier = Modifier.fillMaxWidth(),
-                    leadingIcon = { Icon(Icons.Default.Menu, null, tint = Color(0xFFFF69B4)) },
+                    leadingIcon = { Icon(Icons.Default.Edit, null, tint = Color(0xFFFF69B4)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     shape = RoundedCornerShape(12.dp)
                 )
@@ -157,7 +158,7 @@ fun InputDetailPemeriksaanScreen(
                     shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF607D8B))
                 ) {
-                    Icon(Icons.Default.Build, null) // Ikon Build/Alat
+                    Icon(Icons.Default.List, null)
                     Spacer(Modifier.width(8.dp))
                     Text("Analisis Status Gizi", fontWeight = FontWeight.Bold)
                 }
@@ -165,7 +166,6 @@ fun InputDetailPemeriksaanScreen(
                 if (hasilDihitung) {
                     Spacer(modifier = Modifier.height(8.dp))
 
-                    // KARTU HASIL ANALISIS
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(16.dp),
@@ -177,29 +177,38 @@ fun InputDetailPemeriksaanScreen(
                             if (isNormal) Color(0xFF81C784) else Color(0xFFE57373)
                         )
                     ) {
-                        Column(modifier = Modifier.padding(20.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(24.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
                             Icon(
                                 imageVector = if (isNormal) Icons.Default.CheckCircle else Icons.Default.Warning,
                                 contentDescription = null,
                                 tint = if (isNormal) Color(0xFF2E7D32) else Color(0xFFC62828),
-                                modifier = Modifier.size(40.dp)
+                                modifier = Modifier.size(48.dp)
                             )
-                            Spacer(Modifier.height(8.dp))
+                            Spacer(Modifier.height(12.dp))
                             Text(
                                 text = statusGizi,
                                 fontSize = 22.sp,
                                 fontWeight = FontWeight.ExtraBold,
-                                color = if (isNormal) Color(0xFF2E7D32) else Color(0xFFC62828)
+                                color = if (isNormal) Color(0xFF2E7D32) else Color(0xFFC62828),
+                                textAlign = TextAlign.Center
                             )
+                            Spacer(Modifier.height(4.dp))
                             Text(
                                 text = if (isNormal) "Pertumbuhan balita sesuai grafik." else "Perlu perhatian dan jadwal kontrol!",
-                                fontSize = 13.sp,
-                                color = Color.DarkGray
+                                fontSize = 14.sp,
+                                color = Color.DarkGray,
+                                textAlign = TextAlign.Center
                             )
                         }
                     }
 
-                    // TOMBOL AKSI FINAL
+                    Spacer(modifier = Modifier.height(16.dp))
+
                     Button(
                         onClick = {
                             val data = Pemeriksaan(
